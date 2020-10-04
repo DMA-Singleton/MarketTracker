@@ -1,6 +1,7 @@
 import container from "./ioc/ioc";
 import { IStockModel } from "./Models/Interfaces/IStockModel";
 import SERVICE_IDENTIFIER from "./ioc/serviceIdentifiers";
+import startServer from "./Startup";
 
 const stock = container.get<IStockModel>(SERVICE_IDENTIFIER.STOCK_MODEL);
 stock.findAll().then((res) => {
@@ -14,3 +15,4 @@ new StockHistoryTracker()
   .then(() => console.log("finished"))
   .catch((err) => console.log("error: " + err));
 */
+startServer();
