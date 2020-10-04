@@ -1,6 +1,4 @@
 import StockHistoryTracker from "./Process/StockHistoryTracker";
+import startServer from "./Startup";
 
-new StockHistoryTracker()
-  .pullAllPricesHistory()
-  .then(() => console.log("finished"))
-  .catch((err) => console.log("error: " + err));
+startServer();
