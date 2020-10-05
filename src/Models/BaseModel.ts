@@ -8,7 +8,6 @@ interface IBase {
 
 type PartialId<T> = Partial<IBase> & T;
 
-//TODO - ORDER
 abstract class BaseModel<T1 extends IBase, T2 extends BaseEntity> {
   protected static dataAccess: any; //TODO - Remove static && add to constructor
 
