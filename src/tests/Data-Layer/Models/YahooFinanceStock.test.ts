@@ -9,24 +9,30 @@ beforeEach(async () => {
 });
 
 test("basicOperations", async () => {
-  const stockTest = await new StockModel().persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
-  const yahooFinanceStockTest = await new YahooFinanceStockModel().persist({ stockId: stockTest.id, yfStockName: "AAPL" });
-  return new YahooFinanceStockModel().findById(stockTest.id).then((yahooFinanceStock) => {
+  const stockModel = new StockModel();
+  const yahooFinanceStockModel = new YahooFinanceStockModel();
+  const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
+  const yahooFinanceStockTest = await yahooFinanceStockModel.persist({ stockId: stockTest.id, yfStockName: "AAPL" });
+  return yahooFinanceStockModel.findById(stockTest.id).then((yahooFinanceStock) => {
     expect(yahooFinanceStock).toStrictEqual(yahooFinanceStockTest);
   });
 });
 
 test("findByStockId", async () => {
-  const stockTest = await new StockModel().persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
-  const yahooFinanceStockTest = await new YahooFinanceStockModel().persist({ stockId: stockTest.id, yfStockName: "AAPL" });
-  return new YahooFinanceStockModel().findByStockId(stockTest.id).then((yahooFinanceStock) => {
+  const stockModel = new StockModel();
+  const yahooFinanceStockModel = new YahooFinanceStockModel();
+  const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
+  const yahooFinanceStockTest = await yahooFinanceStockModel.persist({ stockId: stockTest.id, yfStockName: "AAPL" });
+  return yahooFinanceStockModel.findByStockId(stockTest.id).then((yahooFinanceStock) => {
     expect(yahooFinanceStock).toStrictEqual(yahooFinanceStockTest);
   });
 });
 
 test("findByStockId Not Found", async () => {
-  const stockTest = await new StockModel().persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
-  return new YahooFinanceStockModel().findByStockId(stockTest.id).then((yahooFinanceStock) => {
+  const stockModel = new StockModel();
+  const yahooFinanceStockModel = new YahooFinanceStockModel();
+  const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
+  return yahooFinanceStockModel.findByStockId(stockTest.id).then((yahooFinanceStock) => {
     expect(yahooFinanceStock).toStrictEqual(null);
   });
 });
