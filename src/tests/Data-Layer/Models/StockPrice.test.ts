@@ -1,6 +1,7 @@
 const db = require("../../../Data-Layer/DataConnection");
 import StockModel from "../../../Models/StockModel";
 import StockPriceModel from "../../../Models/StockPriceModel";
+import YahooFinanceStockModel from "../../../Models/YahooFinanceStockModel";
 
 beforeAll(() => (process.env.__DEV__ = "true"));
 
@@ -9,7 +10,7 @@ beforeEach(async () => {
 });
 
 test("basicOperations", async () => {
-  const stockModel = new StockModel();
+  const stockModel = new StockModel(new StockPriceModel(), new YahooFinanceStockModel());
   const stockPriceModel = new StockPriceModel();
   const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
   const stockPriceTest = await stockPriceModel.persist({
@@ -25,7 +26,7 @@ test("basicOperations", async () => {
 });
 
 test("findAllByStockId", async () => {
-  const stockModel = new StockModel();
+  const stockModel = new StockModel(new StockPriceModel(), new YahooFinanceStockModel());
   const stockPriceModel = new StockPriceModel();
   const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
   const stockPriceTest = await stockPriceModel.persist({
@@ -48,7 +49,7 @@ test("findAllByStockId", async () => {
 });
 
 test("persist with identity fail", async () => {
-  const stockModel = new StockModel();
+  const stockModel = new StockModel(new StockPriceModel(), new YahooFinanceStockModel());
   const stockPriceModel = new StockPriceModel();
   const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
   const stockPriceTest = await stockPriceModel.persist({
@@ -71,7 +72,7 @@ test("persist with identity fail", async () => {
 });
 
 test("getLatestPriceOfStockId without prices", async () => {
-  const stockModel = new StockModel();
+  const stockModel = new StockModel(new StockPriceModel(), new YahooFinanceStockModel());
   const stockPriceModel = new StockPriceModel();
   const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
   return stockPriceModel.getLatestPriceOfStockId(stockTest.id).then((stockPrice) => {

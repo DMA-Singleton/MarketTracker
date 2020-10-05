@@ -2,20 +2,21 @@ import YahooFinanceMiddleware from "../Middlewares/YahooFinanceMiddleware";
 import StockModel from "../Models/StockModel";
 import StockPriceModel from "../Models/StockPriceModel";
 import ProcessHelperModel from "../Helpers/ProcessHelper";
+import YahooFinanceStockModel from "../Models/YahooFinanceStockModel";
 //TODO - TEST
 class StockHistoryTracker {
   constructor() {}
 
   pullAllPricesHistory = async () => {
-    const stocks = await new StockModel().findAll();
+    const stocks = await new StockModel(new StockPriceModel(), new YahooFinanceStockModel()).findAll();
 
     await Promise.all(
       stocks.map(async (s) => {
-        var stockYFName = await new StockModel().getYahooFinanceStock(s); //TODO - Move to dependency
+        var stockYFName = await new StockModel(new StockPriceModel(), new YahooFinanceStockModel()).getYahooFinanceStock(s); //TODO - Move to dependency
         if (stockYFName !== null) {
           var yfMiddleware = new YahooFinanceMiddleware(stockYFName.yfStockName);
           //TODO - THINK ABOUT IT
-          var lastPrice = await new StockModel().getLastPrice(s); //TODO - Move to dependency
+          var lastPrice = await new StockModel(new StockPriceModel(), new YahooFinanceStockModel()).getLastPrice(s); //TODO - Move to dependency
           if (lastPrice !== null) {
             var nextPriceDate = new Date();
             nextPriceDate.setDate(lastPrice.date.getDate() + 1);

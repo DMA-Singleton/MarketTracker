@@ -17,9 +17,14 @@ interface IStock extends IBase {
 }
 
 class StockModel extends BaseModel<IStock, StockEntity> {
-  constructor() {
+  private stockPriceModel: StockPriceModel;
+  private yahooFinancesStockModel: YahooFinanceStockModel;
+
+  constructor(stockPriceModel: StockPriceModel, yahooFinancesStockModel: YahooFinanceStockModel) {
     super();
     this.dataAccess = stockDataAccess;
+    this.stockPriceModel = stockPriceModel;
+    this.yahooFinancesStockModel = yahooFinancesStockModel;
   }
 
   protected entityMap(entity: StockEntity): IStock {
@@ -44,16 +49,16 @@ class StockModel extends BaseModel<IStock, StockEntity> {
   }
 
   async fillStockPrices(model: IStock) {
-    model.stockPrices = await new StockPriceModel().findAllByStockId(model.id); //TODO - move to dependency
+    model.stockPrices = await this.stockPriceModel.findAllByStockId(model.id);
     return model;
   }
 
   async getLastPrice(model: IStock) {
-    return new StockPriceModel().getLatestPriceOfStockId(model.id); //TODO - move to dependency
+    return this.stockPriceModel.getLatestPriceOfStockId(model.id);
   }
 
   async getYahooFinanceStock(model: IStock) {
-    return await new YahooFinanceStockModel().findByStockId(model.id); //TODO - move to dependency And propperty
+    return await this.yahooFinancesStockModel.findByStockId(model.id);
   }
 }
 

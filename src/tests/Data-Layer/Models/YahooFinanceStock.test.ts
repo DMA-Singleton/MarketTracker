@@ -1,5 +1,6 @@
 const db = require("../../../Data-Layer/DataConnection");
 import StockModel from "../../../Models/StockModel";
+import StockPriceModel from "../../../Models/StockPriceModel";
 import YahooFinanceStockModel from "../../../Models/YahooFinanceStockModel";
 
 beforeAll(() => (process.env.__DEV__ = "true"));
@@ -9,7 +10,7 @@ beforeEach(async () => {
 });
 
 test("basicOperations", async () => {
-  const stockModel = new StockModel();
+  const stockModel = new StockModel(new StockPriceModel(), new YahooFinanceStockModel());
   const yahooFinanceStockModel = new YahooFinanceStockModel();
   const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
   const yahooFinanceStockTest = await yahooFinanceStockModel.persist({ stockId: stockTest.id, yfStockName: "AAPL" });
@@ -19,7 +20,7 @@ test("basicOperations", async () => {
 });
 
 test("findByStockId", async () => {
-  const stockModel = new StockModel();
+  const stockModel = new StockModel(new StockPriceModel(), new YahooFinanceStockModel());
   const yahooFinanceStockModel = new YahooFinanceStockModel();
   const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
   const yahooFinanceStockTest = await yahooFinanceStockModel.persist({ stockId: stockTest.id, yfStockName: "AAPL" });
@@ -29,7 +30,7 @@ test("findByStockId", async () => {
 });
 
 test("findByStockId Not Found", async () => {
-  const stockModel = new StockModel();
+  const stockModel = new StockModel(new StockPriceModel(), new YahooFinanceStockModel());
   const yahooFinanceStockModel = new YahooFinanceStockModel();
   const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
   return yahooFinanceStockModel.findByStockId(stockTest.id).then((yahooFinanceStock) => {
