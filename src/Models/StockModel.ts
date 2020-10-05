@@ -1,8 +1,6 @@
 const stockDataAccess = require("../Data-Layer/DataConnection").Stock;
-const stockPriceDataAccess = require("../Data-Layer/DataConnection").Stock_Price; //TODO - REMOVE IT
-const db = require("../Data-Layer/DataConnection"); //TODO - RETHINK Op
-import StockPrice from "./StockPrice";
-import YahooFinanceStock from "./YahooFinanceStock";
+import StockPrice from "./StockPriceModel";
+import YahooFinanceStock from "./YahooFinanceStockModel";
 import { BaseModel, IBase, BaseEntity, PartialId } from "./BaseModel";
 
 interface StockEntity extends BaseEntity {
