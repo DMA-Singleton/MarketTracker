@@ -3,13 +3,7 @@ const stockPriceDataAccess = require("../Data-Layer/DataConnection").Stock_Price
 const db = require("../Data-Layer/DataConnection"); //TODO - RETHINK Op
 import StockPrice from "./StockPrice";
 import YahooFinanceStock from "./YahooFinanceStock";
-import { BaseModel, BaseModelOptions, BaseEntity } from "./BaseModel";
-
-interface StockOptions extends BaseModelOptions {
-  name?: string;
-  symbol?: string;
-  market?: string;
-}
+import { BaseModel, IBase, BaseEntity, PartialId } from "./BaseModel";
 
 interface StockEntity extends BaseEntity {
   Name?: string;
@@ -17,42 +11,53 @@ interface StockEntity extends BaseEntity {
   Market?: string;
 }
 
-class Stock extends BaseModel<Stock, StockEntity, StockOptions> {
-  public name?: string;
-  public symbol?: string;
-  public market?: string;
-  public stockPrices: StockPrice[] = [];
+interface IStock extends IBase {
+  name?: string;
+  symbol?: string;
+  market?: string;
+  stockPrices?: StockPrice[];
+}
+
+class StockModel extends BaseModel<IStock, StockEntity> {
   public static dataAccess: any = stockDataAccess;
 
-  constructor({ ...opts }: StockOptions = {}) {
-    super({ ...opts });
+  constructor() {
+    super();
   }
 
-  protected entityMap(entity: StockEntity): Stock {
-    return new Stock({
+  protected entityMap(entity: StockEntity): IStock {
+    return {
       id: entity.ID,
       name: entity.Name,
       symbol: entity.Symbol,
       market: entity.Market,
-    });
+    };
   }
 
-  protected entityUnMap(): StockEntity {
-    return { ID: this.id, Name: this.name, Symbol: this.symbol, Market: this.market };
+  protected entityUnMap(model: IStock): StockEntity {
+    return { ID: model.id, Name: model.name, Symbol: model.symbol, Market: model.market };
   }
 
-  async fillStockPrices() {
-    this.stockPrices = await new StockPrice().findAllByStockId(this.id);
-    return this;
+  protected new({ id = 0, ...opts }: PartialId<IStock>) {
+    var model: IStock = {
+      id: id,
+    };
+    Object.assign(model, opts);
+    return model;
   }
 
-  async getLastPrice() {
-    return new StockPrice().getLatestPriceOfStockId(this.id);
+  async fillStockPrices(model: IStock) {
+    model.stockPrices = await new StockPrice().findAllByStockId(model.id); //TODO - move to dependency
+    return model;
   }
 
-  async getYahooFinanceStock() {
-    return await new YahooFinanceStock().findByStockId(this.id);
+  async getLastPrice(model: IStock) {
+    return new StockPrice().getLatestPriceOfStockId(model.id); //TODO - move to dependency
+  }
+
+  async getYahooFinanceStock(model: IStock) {
+    return await new YahooFinanceStock().findByStockId(model.id); //TODO - move to dependency And propperty
   }
 }
 
-export = Stock;
+export = StockModel;

@@ -1,37 +1,43 @@
-import { BaseModel, BaseModelOptions, BaseEntity } from "./BaseModel";
+import { BaseModel, IBase, BaseEntity, PartialId } from "./BaseModel";
 const yahooFinanceStockDataAccess = require("../Data-Layer/DataConnection").YahooFinance_Stock;
 
-interface YahooFinanceStockOptions extends BaseModelOptions {
-  stockId?: number;
-  yfStockName?: string;
-}
-
 interface YahooFinanceStockEntity extends BaseEntity {
-  Stock_ID?: number;
-  YF_StockName?: string;
+  Stock_ID: number;
+  YF_StockName: string;
 }
 
-class YahooFinanceStock extends BaseModel<YahooFinanceStock, YahooFinanceStockEntity, YahooFinanceStockOptions> {
-  public stockId: number;
-  public yfStockName: string;
+interface IYahooFinanceStock extends IBase {
+  stockId: number;
+  yfStockName: string;
+}
+
+class YahooFinanceStockModel extends BaseModel<IYahooFinanceStock, YahooFinanceStockEntity> {
   public static dataAccess: any = yahooFinanceStockDataAccess;
 
-  constructor({ stockId = 0, yfStockName = "", ...opts }: YahooFinanceStockOptions = {}) {
-    super({ ...opts });
-    this.stockId = stockId;
-    this.yfStockName = yfStockName;
+  constructor() {
+    super();
   }
 
-  protected entityMap(entity: YahooFinanceStockEntity): YahooFinanceStock {
-    return new YahooFinanceStock({
+  protected entityMap(entity: YahooFinanceStockEntity): IYahooFinanceStock {
+    return {
       id: entity.ID,
       stockId: entity.Stock_ID,
       yfStockName: entity.YF_StockName,
-    });
+    };
   }
 
-  protected entityUnMap(): YahooFinanceStockEntity {
-    return { ID: this.id, Stock_ID: this.stockId, YF_StockName: this.yfStockName };
+  protected entityUnMap(model: IYahooFinanceStock): YahooFinanceStockEntity {
+    return { ID: model.id, Stock_ID: model.stockId, YF_StockName: model.yfStockName };
+  }
+
+  protected new({ id = 0, ...opts }: PartialId<IYahooFinanceStock>) {
+    var model: IYahooFinanceStock = {
+      id: id,
+      stockId: opts.stockId,
+      yfStockName: opts.yfStockName,
+    };
+    Object.assign(model, opts);
+    return model;
   }
 
   async findByStockId(id: number) {
@@ -40,4 +46,4 @@ class YahooFinanceStock extends BaseModel<YahooFinanceStock, YahooFinanceStockEn
   }
 }
 
-export = YahooFinanceStock;
+export = YahooFinanceStockModel;

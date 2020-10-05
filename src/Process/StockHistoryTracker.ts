@@ -1,35 +1,35 @@
 import YahooFinanceMiddleware from "../Middlewares/YahooFinanceMiddleware";
-import Stock from "../Models/Stock";
-import StockPrice from "../Models/StockPrice";
-import ProcessHelper from "../Helpers/ProcessHelper";
+import StockModel from "../Models/Stock";
+import StockPriceModel from "../Models/StockPrice";
+import ProcessHelperModel from "../Helpers/ProcessHelper";
 //TODO - TEST
 class StockHistoryTracker {
   constructor() {}
 
   pullAllPricesHistory = async () => {
-    const stocks = await new Stock().findAll();
+    const stocks = await new StockModel().findAll();
 
     await Promise.all(
       stocks.map(async (s) => {
-        var stockYFName = await s.getYahooFinanceStock();
+        var stockYFName = await new StockModel().getYahooFinanceStock(s); //TODO - Move to dependency
         if (stockYFName !== null) {
           var yfMiddleware = new YahooFinanceMiddleware(stockYFName.yfStockName);
           //TODO - THINK ABOUT IT
-          var lastPrice = await s.getLastPrice();
+          var lastPrice = await new StockModel().getLastPrice(s); //TODO - Move to dependency
           if (lastPrice !== null) {
             var nextPriceDate = new Date();
             nextPriceDate.setDate(lastPrice.date.getDate() + 1);
             yfMiddleware.setStartDate(nextPriceDate);
           }
           const pi = await yfMiddleware.getPriceHistory();
-          await ProcessHelper.batchProcess(pi, 50 /* TODO - remove hardcoded value*/, async (phd: any) => {
-            await new StockPrice({
+          await ProcessHelperModel.batchProcess(pi, 50 /* TODO - remove hardcoded value*/, async (phd: any) => {
+            await new StockPriceModel().persist({
               id: phd.id,
               date: phd.date,
               open: phd.open,
               close: phd.close,
               volume: phd.volume,
-            }).persist();
+            });
           });
         }
       })
