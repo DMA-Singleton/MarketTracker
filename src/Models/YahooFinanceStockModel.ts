@@ -1,5 +1,5 @@
-import { BaseModel, IBase, BaseEntity, PartialId } from "./BaseModel";
 const yahooFinanceStockDataAccess = require("../Data-Layer/DataConnection").YahooFinance_Stock;
+import { BaseModel, IBase, BaseEntity, PartialId } from "./BaseModel";
 
 interface YahooFinanceStockEntity extends BaseEntity {
   Stock_ID: number;
