@@ -1,7 +1,7 @@
 const db = require("../../../Data-Layer/DataConnection");
-import Stock from "../../../Models/Stock";
-import StockPrice from "../../../Models/StockPrice";
-import YahooFinanceStock from "../../../Models/YahooFinanceStock";
+import StockModel from "../../../Models/StockModel";
+import StockPriceModel from "../../../Models/StockPriceModel";
+import YahooFinanceStockModel from "../../../Models/YahooFinanceStockModel";
 
 beforeAll(() => (process.env.__DEV__ = "true"));
 
@@ -10,88 +10,99 @@ beforeEach(async () => {
 });
 
 test("basicOperations", async () => {
-  const stockTest = await new Stock({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" }).persist();
-  return new Stock().findById(1).then((stock) => {
+  const stockModel = new StockModel(new StockPriceModel(), new YahooFinanceStockModel());
+  const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
+  return stockModel.findById(1).then((stock) => {
     expect(stock).toStrictEqual(stockTest);
   });
 });
 
 test("findAll", async () => {
-  const stockTest = await new Stock({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" }).persist();
-  const stockTest2 = await new Stock({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" }).persist();
-  return new Stock().findAll().then((stocks) => {
+  const stockModel = new StockModel(new StockPriceModel(), new YahooFinanceStockModel());
+  const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
+  const stockTest2 = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
+  return stockModel.findAll().then((stocks) => {
     expect(stocks).toMatchObject([stockTest, stockTest2]);
   });
 });
 
 test("fillStockPrices", async () => {
-  const stockTest = await new Stock({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" }).persist();
-  const stockPriceTest = await new StockPrice({
+  const stockModel = new StockModel(new StockPriceModel(), new YahooFinanceStockModel());
+  const stockPriceModel = new StockPriceModel();
+  const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
+  const stockPriceTest = await stockPriceModel.persist({
     stockId: stockTest.id,
     date: new Date(),
     open: 25,
     close: 25,
     volume: 25,
-  }).persist();
-  return stockTest.fillStockPrices().then((stockTest) => {
+  });
+  return stockModel.fillStockPrices(stockTest).then((stockTest) => {
     expect(stockTest.stockPrices).toMatchObject([stockPriceTest]);
   });
 });
 
 test("getLastPriceDate", async () => {
-  const stockTest = await new Stock({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" }).persist();
-  const stockPriceTest = await new StockPrice({
+  const stockModel = new StockModel(new StockPriceModel(), new YahooFinanceStockModel());
+  const stockPriceModel = new StockPriceModel();
+  const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
+  const stockPriceTest = await stockPriceModel.persist({
     stockId: stockTest.id,
     date: new Date(2020, 5, 1),
     open: 25,
     close: 25,
     volume: 25,
-  }).persist();
-  const stockPriceTest2 = await new StockPrice({
+  });
+  const stockPriceTest2 = await stockPriceModel.persist({
     stockId: stockTest.id,
     date: new Date(2020, 4, 1),
     open: 25,
     close: 25,
     volume: 25,
-  }).persist();
-  return stockTest.getLastPrice().then((stockPrice) => {
+  });
+  return stockModel.getLastPrice(stockTest).then((stockPrice) => {
     expect(stockPrice).toStrictEqual(stockPriceTest);
   });
 });
 
 test("getLastPrice", async () => {
-  const stockTest = await new Stock({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" }).persist();
-  const stockPriceTest = await new StockPrice({
+  const stockModel = new StockModel(new StockPriceModel(), new YahooFinanceStockModel());
+  const stockPriceModel = new StockPriceModel();
+  const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
+  const stockPriceTest = await stockPriceModel.persist({
     stockId: stockTest.id,
     date: new Date(2020, 5, 1),
     open: 25,
     close: 25,
     volume: 25,
-  }).persist();
-  const stockPriceTest2 = await new StockPrice({
+  });
+  const stockPriceTest2 = await stockPriceModel.persist({
     stockId: stockTest.id,
     date: new Date(2020, 4, 1),
     open: 25,
     close: 25,
     volume: 25,
-  }).persist();
-  return stockTest.getLastPrice().then((stockPrice) => {
+  });
+  return stockModel.getLastPrice(stockTest).then((stockPrice) => {
     expect(stockPrice).toStrictEqual(stockPriceTest);
   });
 });
 
 test("getYahooFinanceStock", async () => {
-  const stockTest = await new Stock({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" }).persist();
-  const yahooFinanceStockTest = await new YahooFinanceStock({ stockId: stockTest.id, yfStockName: "AAPL" }).persist();
-  return stockTest.getYahooFinanceStock().then((yahooFinanceStock) => {
+  const stockModel = new StockModel(new StockPriceModel(), new YahooFinanceStockModel());
+  const yahooFinanceStockModel = new YahooFinanceStockModel();
+  const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
+  const yahooFinanceStockTest = await yahooFinanceStockModel.persist({ stockId: stockTest.id, yfStockName: "AAPL" });
+  return stockModel.getYahooFinanceStock(stockTest).then((yahooFinanceStock) => {
     expect(yahooFinanceStock).toStrictEqual(yahooFinanceStockTest);
   });
 });
 
 test("persist With repeated id", async () => {
-  const stockTest = await new Stock({ id: 1, name: "Microsoft", symbol: "MSFT", market: "NASDAQ" }).persist();
-  const stockTest2 = await new Stock({ id: 1, name: "Microsoft", symbol: "MSFT", market: "NASDAQ" }).persist();
-  return new Stock().findAll().then((stocks) => {
+  const stockModel = new StockModel(new StockPriceModel(), new YahooFinanceStockModel());
+  const stockTest = await stockModel.persist({ id: 1, name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
+  const stockTest2 = await stockModel.persist({ id: 1, name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
+  return stockModel.findAll().then((stocks) => {
     expect(stocks).toMatchObject([stockTest]);
   });
 });
