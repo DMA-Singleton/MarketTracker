@@ -1,6 +1,6 @@
 const db = require("../../../Data-Layer/DataConnection");
-import StockModel from "../../../Models/Stock";
-import StockPriceModel from "../../../Models/StockPrice";
+import StockModel from "../../../Models/StockModel";
+import StockPriceModel from "../../../Models/StockPriceModel";
 
 beforeAll(() => (process.env.__DEV__ = "true"));
 

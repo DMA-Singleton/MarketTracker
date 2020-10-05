@@ -1,6 +1,6 @@
 import YahooFinanceMiddleware from "../Middlewares/YahooFinanceMiddleware";
-import StockModel from "../Models/Stock";
-import StockPriceModel from "../Models/StockPrice";
+import StockModel from "../Models/StockModel";
+import StockPriceModel from "../Models/StockPriceModel";
 import ProcessHelperModel from "../Helpers/ProcessHelper";
 //TODO - TEST
 class StockHistoryTracker {
