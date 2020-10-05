@@ -43,7 +43,7 @@ test("findAllByStockId", async () => {
   });
 });
 
-test("persistant with identity fail", async () => {
+test("persist with identity fail", async () => {
   const stockTest = await new StockModel().persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
   const stockPriceTest = await new StockPriceModel().persist({
     stockId: stockTest.id,
