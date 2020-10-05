@@ -19,10 +19,9 @@ interface IStock extends IBase {
 }
 
 class StockModel extends BaseModel<IStock, StockEntity> {
-  public static dataAccess: any = stockDataAccess;
-
   constructor() {
     super();
+    this.dataAccess = stockDataAccess;
   }
 
   protected entityMap(entity: StockEntity): IStock {

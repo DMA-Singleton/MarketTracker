@@ -3,13 +3,13 @@ interface BaseEntity {
 }
 
 interface IBase {
-  id: number; 
+  id: number;
 }
 
 type PartialId<T> = Partial<IBase> & T;
 
 abstract class BaseModel<T1 extends IBase, T2 extends BaseEntity> {
-  protected static dataAccess: any; //TODO - Remove static && add to constructor
+  protected dataAccess: any;
 
   constructor() {}
 
@@ -27,7 +27,7 @@ abstract class BaseModel<T1 extends IBase, T2 extends BaseEntity> {
   }
 
   protected async checkUniqueId(model: T1) {
-    const entity = await (this.constructor as any).dataAccess.findByPk(model.id);
+    const entity = await this.dataAccess.findByPk(model.id);
     if (entity !== null) return false;
     return true;
   }
@@ -44,17 +44,17 @@ abstract class BaseModel<T1 extends IBase, T2 extends BaseEntity> {
   }
 
   private async create(model: T1) {
-    const entity = await (this.constructor as any).dataAccess.create(this.entityUnMap(model));
+    const entity = await this.dataAccess.create(this.entityUnMap(model));
     return this.entityMap(entity);
   }
 
   async findById(id: number) {
-    const entity = await (this.constructor as any).dataAccess.findByPk(id);
+    const entity = await this.dataAccess.findByPk(id);
     return this.entityMap(entity);
   }
 
   async findAll(): Promise<T1[]> {
-    const entity = await (this.constructor as any).dataAccess.findAll();
+    const entity = await this.dataAccess.findAll();
     return await entity.map((i: any) => this.entityMap(i));
   }
 }

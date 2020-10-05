@@ -12,10 +12,9 @@ interface IYahooFinanceStock extends IBase {
 }
 
 class YahooFinanceStockModel extends BaseModel<IYahooFinanceStock, YahooFinanceStockEntity> {
-  public static dataAccess: any = yahooFinanceStockDataAccess;
-
   constructor() {
     super();
+    this.dataAccess = yahooFinanceStockDataAccess;
   }
 
   protected entityMap(entity: YahooFinanceStockEntity): IYahooFinanceStock {
@@ -41,7 +40,7 @@ class YahooFinanceStockModel extends BaseModel<IYahooFinanceStock, YahooFinanceS
   }
 
   async findByStockId(id: number) {
-    const entity = await yahooFinanceStockDataAccess.findOne({ where: { Stock_ID: id } });
+    const entity = await this.dataAccess.findOne({ where: { Stock_ID: id } });
     return entity === null ? null : this.entityMap(entity);
   }
 }

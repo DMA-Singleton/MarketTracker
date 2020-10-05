@@ -19,10 +19,9 @@ interface IStockPrice extends IBase {
 }
 
 class StockPriceModel extends BaseModel<IStockPrice, StockPriceEntity> {
-  public static dataAccess: any = stockPriceDataAccess;
-
   constructor() {
     super();
+    this.dataAccess = stockPriceDataAccess;
   }
 
   protected entityMap(entity: StockPriceEntity): IStockPrice {
@@ -56,7 +55,7 @@ class StockPriceModel extends BaseModel<IStockPrice, StockPriceEntity> {
   }
 
   protected async checkIdentityConstraints(model: IStockPrice) {
-    const entity = await (this.constructor as any).dataAccess.findOne({
+    const entity = await this.dataAccess.findOne({
       where: { Date: model.date, Stock_ID: model.stockId },
     });
     if (entity !== null) return false;
@@ -64,14 +63,14 @@ class StockPriceModel extends BaseModel<IStockPrice, StockPriceEntity> {
   }
 
   async findAllByStockId(id: number) {
-    const stockPrices = await StockPriceModel.dataAccess.findAll({
+    const stockPrices = await this.dataAccess.findAll({
       where: { Stock_ID: id },
     });
     return await stockPrices.map((e: any) => this.entityMap(e));
   }
 
   async getLatestPriceOfStockId(id: number) {
-    const entity = await StockPriceModel.dataAccess.findAll({
+    const entity = await this.dataAccess.findAll({
       where: { Stock_ID: id },
       limit: 1,
       order: [["Date", "DESC"]],
