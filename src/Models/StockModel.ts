@@ -39,8 +39,8 @@ class StockModel extends BaseModel<IStock, StockEntity> implements IStockModel {
   protected new({ id = 0, ...opts }: PartialId<IStock>) {
     var model: IStock = {
       id: id,
+      ...opts,
     };
-    Object.assign(model, opts);
     return model;
   }
 
