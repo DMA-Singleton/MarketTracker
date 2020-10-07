@@ -1,5 +1,6 @@
 const yahooFinanceStockDataAccess = require("../Data-Layer/DataConnection").YahooFinance_Stock;
 import { BaseModel, BaseEntity, PartialId } from "./BaseModel";
+import { injectable } from "inversify";
 import { IYahooFinanceStock, IYahooFinanceStockModel } from "./Interfaces/IYahooFinanceStockModel";
 
 interface YahooFinanceStockEntity extends BaseEntity {
@@ -7,7 +8,7 @@ interface YahooFinanceStockEntity extends BaseEntity {
   YF_StockName: string;
 }
 
-interface IYahooFinanceStock extends IBase {
+@injectable()
 class YahooFinanceStockModel extends BaseModel<IYahooFinanceStock, YahooFinanceStockEntity> implements IYahooFinanceStockModel {
   constructor() {
     super();

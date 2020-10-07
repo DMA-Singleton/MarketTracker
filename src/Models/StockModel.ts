@@ -2,7 +2,9 @@ const stockDataAccess = require("../Data-Layer/DataConnection").Stock;
 import StockPriceModel from "./StockPriceModel";
 import YahooFinanceStockModel from "./YahooFinanceStockModel";
 import { BaseModel, BaseEntity, PartialId } from "./BaseModel";
+import { injectable, inject } from "inversify";
 import { IStock, IStockModel } from "./Interfaces/IStockModel";
+import SERVICE_IDENTIFIER from "../serviceIdentifiers";
 
 interface StockEntity extends BaseEntity {
   Name?: string;
@@ -10,12 +12,14 @@ interface StockEntity extends BaseEntity {
   Market?: string;
 }
 
-interface IStock extends IBase {
+@injectable()
 class StockModel extends BaseModel<IStock, StockEntity> implements IStockModel {
   private stockPriceModel: StockPriceModel;
   private yahooFinancesStockModel: YahooFinanceStockModel;
 
   constructor(
+    @inject(SERVICE_IDENTIFIER.STOCK_PRICE_MODEL) stockPriceModel: StockPriceModel,
+    @inject(SERVICE_IDENTIFIER.YAHOO_FINANCE_STOCK_MODEL) yahooFinancesStockModel: YahooFinanceStockModel
   ) {
     super();
     this.dataAccess = stockDataAccess;

@@ -1,5 +1,6 @@
 const stockPriceDataAccess = require("../Data-Layer/DataConnection").Stock_Price;
 import { BaseModel, BaseEntity, PartialId } from "./BaseModel";
+import { injectable } from "inversify";
 import { IStockPrice, IStockPriceModel } from "./Interfaces/IStockPriceModel";
 
 interface StockPriceEntity extends BaseEntity {
@@ -11,7 +12,7 @@ interface StockPriceEntity extends BaseEntity {
   Volume?: number;
 }
 
-interface IStockPrice extends IBase {
+@injectable()
 class StockPriceModel extends BaseModel<IStockPrice, StockPriceEntity> implements IStockPriceModel {
   constructor() {
     super();

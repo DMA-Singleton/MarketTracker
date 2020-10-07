@@ -1,4 +1,5 @@
 import { IBase } from "./Interfaces/IBaseModel";
+import { injectable } from "inversify";
 
 interface BaseEntity {
   ID: number;
@@ -6,6 +7,7 @@ interface BaseEntity {
 
 type PartialId<T> = Partial<IBase> & T;
 
+@injectable()
 abstract class BaseModel<T1 extends IBase, T2 extends BaseEntity> {
   protected dataAccess: any;
 
