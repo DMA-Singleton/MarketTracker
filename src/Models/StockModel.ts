@@ -4,7 +4,7 @@ import YahooFinanceStockModel from "./YahooFinanceStockModel";
 import { BaseModel, BaseEntity, PartialId } from "./BaseModel";
 import { injectable, inject } from "inversify";
 import { IStock, IStockModel } from "./Interfaces/IStockModel";
-import SERVICE_IDENTIFIER from "../serviceIdentifiers";
+import SERVICE_IDENTIFIER from "../ioc/serviceIdentifiers";
 
 interface StockEntity extends BaseEntity {
   Name?: string;

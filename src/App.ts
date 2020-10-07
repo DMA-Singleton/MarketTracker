@@ -1,6 +1,6 @@
-import container from "./ioc";
+import container from "./ioc/ioc";
 import { IStockModel } from "./Models/Interfaces/IStockModel";
-import SERVICE_IDENTIFIER from "./serviceIdentifiers";
+import SERVICE_IDENTIFIER from "./ioc/serviceIdentifiers";
 
 const stock = container.get<IStockModel>(SERVICE_IDENTIFIER.STOCK_MODEL);
 stock.findAll().then((res) => {

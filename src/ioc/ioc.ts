@@ -4,13 +4,13 @@ import SERVICE_IDENTIFIER from "./serviceIdentifiers";
 
 //#region Models
 //interfaces
-import { IStockModel } from "./Models/Interfaces/IStockModel";
-import { IStockPriceModel } from "./Models/Interfaces/IStockPriceModel";
-import { IYahooFinanceStockModel } from "./Models/Interfaces/IYahooFinanceStockModel";
+import { IStockModel } from "../Models/Interfaces/IStockModel";
+import { IStockPriceModel } from "../Models/Interfaces/IStockPriceModel";
+import { IYahooFinanceStockModel } from "../Models/Interfaces/IYahooFinanceStockModel";
 //classes
-import StockModel from "./Models/StockModel";
-import StockPriceModel from "./Models/StockPriceModel";
-import YahooFinanceStockModel from "./Models/YahooFinanceStockModel";
+import StockModel from "../Models/StockModel";
+import StockPriceModel from "../Models/StockPriceModel";
+import YahooFinanceStockModel from "../Models/YahooFinanceStockModel";
 //#endregion
 
 let container = new Container();

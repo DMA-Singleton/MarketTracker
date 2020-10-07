@@ -10,5 +10,5 @@ module.exports = {
   globalSetup: "./bin/tests/jest-config.js",
   preset: "ts-jest",
   testEnvironment: "node",
-  setupFiles: ["./src/ioc.ts"],
+  setupFiles: ["./src/ioc/ioc.ts"],
 };
