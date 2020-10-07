@@ -1,13 +1,13 @@
 import container from "./ioc/ioc";
 import { IStockModel } from "./Models/Interfaces/IStockModel";
 import SERVICE_IDENTIFIER from "./ioc/serviceIdentifiers";
-import startServer from "./Startup";
-
+import startServer from "./Server/Startup";
+/*
 const stock = container.get<IStockModel>(SERVICE_IDENTIFIER.STOCK_MODEL);
 stock.findAll().then((res) => {
   console.log(res);
 });
-
+*/
 /*import StockHistoryTracker from "./Process/StockHistoryTracker";
 
 new StockHistoryTracker()
