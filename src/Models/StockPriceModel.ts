@@ -1,5 +1,6 @@
 const stockPriceDataAccess = require("../Data-Layer/DataConnection").Stock_Price;
-import { BaseModel, IBase, BaseEntity, PartialId } from "./BaseModel";
+import { BaseModel, BaseEntity, PartialId } from "./BaseModel";
+import { IStockPrice, IStockPriceModel } from "./Interfaces/IStockPriceModel";
 
 interface StockPriceEntity extends BaseEntity {
   Name?: string;
@@ -11,14 +12,7 @@ interface StockPriceEntity extends BaseEntity {
 }
 
 interface IStockPrice extends IBase {
-  stockId: number;
-  date: Date;
-  open?: number;
-  close?: number;
-  volume?: number;
-}
-
-class StockPriceModel extends BaseModel<IStockPrice, StockPriceEntity> {
+class StockPriceModel extends BaseModel<IStockPrice, StockPriceEntity> implements IStockPriceModel {
   constructor() {
     super();
     this.dataAccess = stockPriceDataAccess;
@@ -62,14 +56,14 @@ class StockPriceModel extends BaseModel<IStockPrice, StockPriceEntity> {
     return true;
   }
 
-  async findAllByStockId(id: number) {
+  async findAllByStockId(id: number): Promise<IStockPrice[]> {
     const stockPrices = await this.dataAccess.findAll({
       where: { Stock_ID: id },
     });
     return await stockPrices.map((e: any) => this.entityMap(e));
   }
 
-  async getLatestPriceOfStockId(id: number) {
+  async getLatestPriceOfStockId(id: number): Promise<IStockPrice | null> {
     const entity = await this.dataAccess.findAll({
       where: { Stock_ID: id },
       limit: 1,

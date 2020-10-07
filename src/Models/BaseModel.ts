@@ -1,9 +1,7 @@
+import { IBase } from "./Interfaces/IBaseModel";
+
 interface BaseEntity {
   ID: number;
-}
-
-interface IBase {
-  id: number;
 }
 
 type PartialId<T> = Partial<IBase> & T;
@@ -19,13 +17,6 @@ abstract class BaseModel<T1 extends IBase, T2 extends BaseEntity> {
 
   protected abstract new({}: Partial<T1>): T1;
 
-  async exist(model: T1) {
-    if ((await this.checkIdentityConstraints(model)) === false) return true;
-    if (model.id === undefined) return false;
-    if ((await this.checkUniqueId(model)) === false) return true;
-    return false;
-  }
-
   protected async checkUniqueId(model: T1) {
     const entity = await this.dataAccess.findByPk(model.id);
     if (entity !== null) return false;
@@ -34,6 +25,13 @@ abstract class BaseModel<T1 extends IBase, T2 extends BaseEntity> {
 
   protected async checkIdentityConstraints(model: T1) {
     return true;
+  }
+
+  async exist(model: T1) {
+    if ((await this.checkIdentityConstraints(model)) === false) return true;
+    if (model.id === undefined) return false;
+    if ((await this.checkUniqueId(model)) === false) return true;
+    return false;
   }
 
   async persist(model: Partial<T1>) {
@@ -59,4 +57,4 @@ abstract class BaseModel<T1 extends IBase, T2 extends BaseEntity> {
   }
 }
 
-export { BaseModel, IBase, BaseEntity, PartialId };
+export { BaseModel, BaseEntity, PartialId };

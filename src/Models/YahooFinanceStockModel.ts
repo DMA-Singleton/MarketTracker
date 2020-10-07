@@ -1,5 +1,6 @@
 const yahooFinanceStockDataAccess = require("../Data-Layer/DataConnection").YahooFinance_Stock;
-import { BaseModel, IBase, BaseEntity, PartialId } from "./BaseModel";
+import { BaseModel, BaseEntity, PartialId } from "./BaseModel";
+import { IYahooFinanceStock, IYahooFinanceStockModel } from "./Interfaces/IYahooFinanceStockModel";
 
 interface YahooFinanceStockEntity extends BaseEntity {
   Stock_ID: number;
@@ -7,11 +8,7 @@ interface YahooFinanceStockEntity extends BaseEntity {
 }
 
 interface IYahooFinanceStock extends IBase {
-  stockId: number;
-  yfStockName: string;
-}
-
-class YahooFinanceStockModel extends BaseModel<IYahooFinanceStock, YahooFinanceStockEntity> {
+class YahooFinanceStockModel extends BaseModel<IYahooFinanceStock, YahooFinanceStockEntity> implements IYahooFinanceStockModel {
   constructor() {
     super();
     this.dataAccess = yahooFinanceStockDataAccess;

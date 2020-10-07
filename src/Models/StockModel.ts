@@ -1,7 +1,8 @@
 const stockDataAccess = require("../Data-Layer/DataConnection").Stock;
 import StockPriceModel from "./StockPriceModel";
 import YahooFinanceStockModel from "./YahooFinanceStockModel";
-import { BaseModel, IBase, BaseEntity, PartialId } from "./BaseModel";
+import { BaseModel, BaseEntity, PartialId } from "./BaseModel";
+import { IStock, IStockModel } from "./Interfaces/IStockModel";
 
 interface StockEntity extends BaseEntity {
   Name?: string;
@@ -10,17 +11,12 @@ interface StockEntity extends BaseEntity {
 }
 
 interface IStock extends IBase {
-  name?: string;
-  symbol?: string;
-  market?: string;
-  stockPrices?: StockPriceModel[];
-}
-
-class StockModel extends BaseModel<IStock, StockEntity> {
+class StockModel extends BaseModel<IStock, StockEntity> implements IStockModel {
   private stockPriceModel: StockPriceModel;
   private yahooFinancesStockModel: YahooFinanceStockModel;
 
-  constructor(stockPriceModel: StockPriceModel, yahooFinancesStockModel: YahooFinanceStockModel) {
+  constructor(
+  ) {
     super();
     this.dataAccess = stockDataAccess;
     this.stockPriceModel = stockPriceModel;
