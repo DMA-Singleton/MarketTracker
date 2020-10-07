@@ -1,4 +1,3 @@
-//declare var __DEV__: any; //TODO - remove
 import { Sequelize, DataTypes } from "sequelize";
 import fs from "fs";
 
