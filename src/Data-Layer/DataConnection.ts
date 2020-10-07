@@ -1,11 +1,10 @@
-//declare var __DEV__: any;
 import { Sequelize, DataTypes } from "sequelize";
 import fs from "fs";
 
 const db: any = {};
 
 var sequelize: Sequelize;
-
+//TODO - rethink
 if (process.env.__DEV__) {
   sequelize = new Sequelize("FINANCIAL_TEST", "agufa", "agufa", {
     host: "localhost",
