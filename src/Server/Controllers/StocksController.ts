@@ -16,10 +16,15 @@ class StocksController {
 
   public initializeRoutes() {
     this.router.get(this.path, this.getAllStocks.bind(this));
+    this.router.get(this.path + "/:id", this.getStock.bind(this));
   }
 
   async getAllStocks(request: express.Request, response: express.Response) {
     response.send(await this.stockModel.findAll());
+  }
+
+  async getStock(request: express.Request, response: express.Response) {
+    response.send(await this.stockModel.findById(parseInt(request.params.id)));
   }
 }
 
