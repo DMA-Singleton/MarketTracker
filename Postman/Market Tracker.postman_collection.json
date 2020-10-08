@@ -36,6 +36,34 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Stocks",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Microsoft\",\n    \"symbol\": \"MSFT\",\n    \"market\": \"NASDAQ\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:2999/Stocks/1",
+							"host": [
+								"localhost"
+							],
+							"port": "2999",
+							"path": [
+								"Stocks",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}

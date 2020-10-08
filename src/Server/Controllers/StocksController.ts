@@ -17,6 +17,7 @@ class StocksController {
   public initializeRoutes() {
     this.router.get(this.path, this.getAllStocks.bind(this));
     this.router.get(this.path + "/:id", this.getStock.bind(this));
+    this.router.post(this.path, this.postStock.bind(this));
   }
 
   async getAllStocks(request: express.Request, response: express.Response) {
@@ -25,6 +26,10 @@ class StocksController {
 
   async getStock(request: express.Request, response: express.Response) {
     response.send(await this.controllerLogic.getStock(parseInt(request.params.id) /*TODO - Refactor */));
+  }
+
+  async postStock(request: express.Request, response: express.Response) {
+    response.send(await this.controllerLogic.addStock(request.body));
   }
 }
 

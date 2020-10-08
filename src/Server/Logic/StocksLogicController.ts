@@ -1,6 +1,7 @@
 import { IStockModel, IStock } from "../../Models/Interfaces/IStockModel";
 import { injectable, inject } from "inversify";
 import SERVICE_IDENTIFIER from "../../ioc/serviceIdentifiers";
+import StockRequest from "../Dtos/StockRequest";
 
 @injectable()
 class StocksLogicController {
@@ -16,6 +17,10 @@ class StocksLogicController {
 
   async getStock(id: number) {
     return this.stockModel.findById(id);
+  }
+
+  async addStock(request: StockRequest) {
+    return this.stockModel.persist(request);
   }
 }
 
