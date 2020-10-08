@@ -1,5 +1,5 @@
 import express from "express";
-import { IStockModel, IStock } from "../../Models/Interfaces/IStockModel";
+import StocksLogicController from "../Logic/StocksLogicController";
 import { injectable, inject } from "inversify";
 import SERVICE_IDENTIFIER from "../../ioc/serviceIdentifiers";
 
@@ -7,11 +7,11 @@ import SERVICE_IDENTIFIER from "../../ioc/serviceIdentifiers";
 class StocksController {
   public path = "/Stocks";
   public router = express.Router();
-  private stockModel: IStockModel;
+  private controllerLogic: StocksLogicController;
 
-  constructor(@inject(SERVICE_IDENTIFIER.STOCK_MODEL) stockModel: IStockModel) {
+  constructor(@inject(SERVICE_IDENTIFIER.STOCK_CONTROLLER_LOGIC) controllerLogic: StocksLogicController) {
     this.initializeRoutes();
-    this.stockModel = stockModel;
+    this.controllerLogic = controllerLogic;
   }
 
   public initializeRoutes() {
@@ -20,11 +20,11 @@ class StocksController {
   }
 
   async getAllStocks(request: express.Request, response: express.Response) {
-    response.send(await this.stockModel.findAll());
+    response.send(await this.controllerLogic.getAllStocks());
   }
 
   async getStock(request: express.Request, response: express.Response) {
-    response.send(await this.stockModel.findById(parseInt(request.params.id)));
+    response.send(await this.controllerLogic.getStock(parseInt(request.params.id) /*TODO - Refactor */));
   }
 }
 

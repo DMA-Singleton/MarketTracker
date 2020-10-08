@@ -4,6 +4,9 @@ const SERVICE_IDENTIFIER = {
   STOCK_PRICE_MODEL: Symbol.for("StockPriceModel"),
   YAHOO_FINANCE_STOCK_MODEL: Symbol.for("YahooFinanceModel"),
 
+  //Logic controller
+  STOCK_CONTROLLER_LOGIC: Symbol.for("StockControllerLogic"),
+
   //Controllers
   STOCK_CONTROLLER: Symbol.for("StockController"),
 };
