@@ -1,0 +1,45 @@
+{
+	"info": {
+		"_postman_id": "fa0b3257-ba4c-41dc-86e9-36e2b18da3f3",
+		"name": "Market Tracker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Stocks",
+			"item": [
+				{
+					"name": "Stocks get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:2999/Stocks",
+							"host": [
+								"localhost"
+							],
+							"port": "2999",
+							"path": [
+								"Stocks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Stocks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
