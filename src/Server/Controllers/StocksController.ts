@@ -5,8 +5,8 @@ import SERVICE_IDENTIFIER from "../../ioc/serviceIdentifiers";
 
 @injectable()
 class StocksController {
-  public path = "/Stocks";
-  public router = express.Router();
+  public path = "/Stocks"; //TODO - Refactor to base
+  public router = express.Router(); //TODO - Refactor to base
   private controllerLogic: StocksLogicController;
 
   constructor(@inject(SERVICE_IDENTIFIER.STOCK_CONTROLLER_LOGIC) controllerLogic: StocksLogicController) {
