@@ -25,7 +25,7 @@ class StockHistoryTracker {
           const pi = await yfMiddleware.getPriceHistory();
           await ProcessHelperModel.batchProcess(pi, 50 /* TODO - remove hardcoded value*/, async (phd: any) => {
             await new StockPriceModel().persist({
-              id: phd.id,
+              stockId: s.id,
               date: phd.date,
               open: phd.open,
               close: phd.close,
