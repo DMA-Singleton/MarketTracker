@@ -5,7 +5,7 @@
   "main": "App.js",
   "scripts": {
     "rmBin": "rm -r ./bin",
-    "rmDataModels": "rm -r ./src/Data-Layer/Data-Models",
+    "rmDataModels": "rm -rf ./src/Data-Layer/Data-Models",
     "cpDataModels": "cp -r ./src/Data-Layer/Data-Models ./bin/Data-Layer",
     "tsc": "tsc",
     "rebuild": "npm run rmBin && npm run tsc && npm run cpDataModels",
