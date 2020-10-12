@@ -35,7 +35,7 @@ class StocksController extends BaseController {
   }
 
   async getStock(request: express.Request, response: express.Response) {
-    response.send(await this.controllerLogic.getStock(parseInt(request.params.id) /*TODO - Refactor */));
+    response.send(await this.controllerLogic.getStock(this.getRequestId(request)));
   }
 
   async postStock(request: express.Request, response: express.Response) {

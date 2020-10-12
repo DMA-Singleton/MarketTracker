@@ -9,6 +9,10 @@ abstract class BaseController {
 
   public abstract initializeRoutes(): void;
 
+  public getRequestId(request: express.Request) {
+    return parseInt(request.params.id);
+  }
+
   public async checkValidations(request: express.Request, response: express.Response, next: express.NextFunction) {
     if (validationResult(request).isEmpty()) {
       next();
