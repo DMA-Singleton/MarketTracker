@@ -1,5 +1,5 @@
 import express from "express";
-import { body, validationResult } from "express-validator";
+import { validationResult } from "express-validator";
 import { injectable } from "inversify";
 
 @injectable()
@@ -13,7 +13,7 @@ abstract class BaseController {
     if (validationResult(request).isEmpty()) {
       next();
     } else {
-      const errors: any = { errors: [] };
+      const errors: ErrorBodyResponse = { errors: [] };
       validationResult(request)
         .array()
         .map((i) => errors.errors.push({ param: i.param, value: i.value, msg: i.msg }));
