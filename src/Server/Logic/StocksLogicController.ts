@@ -2,6 +2,7 @@ import { IStockModel, IStock } from "../../Models/Interfaces/IStockModel";
 import { injectable, inject } from "inversify";
 import SERVICE_IDENTIFIER from "../../ioc/serviceIdentifiers";
 import StockRequest from "../Dtos/StockRequest";
+import { StockResponse } from "../Dtos/StockResponse";
 
 @injectable()
 class StocksLogicController {
@@ -11,16 +12,25 @@ class StocksLogicController {
     this.stockModel = stockModel;
   }
 
+  private async createStockResponse(model: IStock) {
+    const response = <StockResponse>model;
+    response.lastPriceDate = (await this.stockModel.getLastPrice(model))?.date;
+    return response;
+  }
+
   async getAllStocks() {
-    return this.stockModel.findAll();
+    const response: StockResponse[] = [];
+    const models = await this.stockModel.findAll();
+    await Promise.all(models.map(async (i) => response.push(await this.createStockResponse(i))));
+    return response;
   }
 
   async getStock(id: number) {
-    return this.stockModel.findById(id);
+    return this.createStockResponse(await this.stockModel.findById(id));
   }
 
   async addStock(request: StockRequest) {
-    return this.stockModel.persist(request);
+    return this.createStockResponse(await this.stockModel.persist(request));
   }
 }
 

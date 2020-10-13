@@ -2,6 +2,7 @@ interface StockResponse {
   name?: string;
   symbol?: string;
   market?: string;
+  lastPriceDate?: Date;
 }
 
 interface StockPrice {
@@ -13,7 +14,6 @@ interface StockPrice {
 
 interface ExtendedStockResponse extends StockResponse {
   stockPrices?: StockPrice[];
-  lastPrice?: Date;
 }
 
 export { StockResponse, ExtendedStockResponse };
