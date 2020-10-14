@@ -35,6 +35,7 @@
     "sequelize-auto": "^0.6.0",
     "sqlite3": "^5.0.0",
     "ts-jest": "^26.4.0",
+    "typemoq": "^2.1.0",
     "typescript": "^4.0.3"
   },
   "prettier": {
