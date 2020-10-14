@@ -11,4 +11,11 @@ module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
   setupFiles: ["./src/ioc/ioc.ts"],
+  collectCoverageFrom: [
+    "<rootDir>/src/**/*.{js,jsx,ts,tsx}",
+    "!<rootDir>/src/Server/Controllers/**",
+    "!<rootDir>/src/App.ts",
+    "!<rootDir>/src/Server/Startup.ts",
+    "!<rootDir>/src/tests/jest-config.ts",
+  ],
 };
