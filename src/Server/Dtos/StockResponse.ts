@@ -1,4 +1,5 @@
 interface StockResponse {
+  id: number;
   name?: string;
   symbol?: string;
   market?: string;
