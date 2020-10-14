@@ -1,9 +1,7 @@
-const db = require("../../../Data-Layer/DataConnection");
-import StockModel from "../../../Models/StockModel";
-import StockPriceModel from "../../../Models/StockPriceModel";
-import YahooFinanceStockModel from "../../../Models/YahooFinanceStockModel";
-
-beforeAll(() => (process.env.__DEV__ = "true"));
+const db = require("../../Data-Layer/DataConnection");
+import StockModel from "../../Models/StockModel";
+import StockPriceModel from "../../Models/StockPriceModel";
+import YahooFinanceStockModel from "../../Models/YahooFinanceStockModel";
 
 beforeEach(async () => {
   await db.sequelize.sync({ force: true });
