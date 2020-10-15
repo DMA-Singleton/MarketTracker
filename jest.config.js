@@ -7,7 +7,7 @@ module.exports = {
   globals: {
     __DEV__: true,
   },
-  globalSetup: "./bin/tests/jest-config.js",
+  globalSetup: "./src/tests/jest-config.ts",
   preset: "ts-jest",
   testEnvironment: "node",
   setupFiles: ["./src/ioc/ioc.ts"],
