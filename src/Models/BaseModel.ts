@@ -25,27 +25,40 @@ abstract class BaseModel<T1 extends IBase, T2 extends BaseEntity> {
     return true;
   }
 
-  protected async checkIdentityConstraints(model: T1) {
+  protected async isCreatable(model: T1) {
     return true;
   }
 
   async exist(model: T1) {
-    if ((await this.checkIdentityConstraints(model)) === false) return true;
-    if (model.id === undefined) return false;
+    if (!model.id) return false;
     if ((await this.checkUniqueId(model)) === false) return true;
     return false;
   }
 
   async persist(model: Partial<T1>) {
     const modelComplete = this.new(model);
-    //TODO - Add Validation
-    if (!(await this.exist(modelComplete))) return this.create(modelComplete);
-    return modelComplete; //TODO - ADD Update
+    if (!(await this.exist(modelComplete))) {
+      await this.checkIsCreatable(modelComplete);
+      return this.create(modelComplete);
+    } else {
+      return this.update(modelComplete);
+    }
+  }
+
+  private async checkIsCreatable(model: T1) {
+    if (!(await this.isCreatable(model))) {
+      throw new Error("model is not creatable");
+    }
   }
 
   private async create(model: T1) {
     const entity = await this.dataAccess.create(this.entityUnMap(model));
     return this.entityMap(entity);
+  }
+
+  private async update(model: T1) {
+    await this.dataAccess.update(this.entityUnMap(model), { where: { ID: model.id } });
+    return this.findById(model.id);
   }
 
   async findById(id: number) {

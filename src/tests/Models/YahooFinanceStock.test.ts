@@ -12,6 +12,8 @@ test("basicOperations", async () => {
   const yahooFinanceStockModel = new YahooFinanceStockModel();
   const stockTest = await stockModel.persist({ name: "Microsoft", symbol: "MSFT", market: "NASDAQ" });
   const yahooFinanceStockTest = await yahooFinanceStockModel.persist({ stockId: stockTest.id, yfStockName: "AAPL" });
+  yahooFinanceStockTest.yfStockName = "AAPL2";
+  await yahooFinanceStockModel.persist(yahooFinanceStockTest);
   return yahooFinanceStockModel.findById(stockTest.id).then((yahooFinanceStock) => {
     expect(yahooFinanceStock).toStrictEqual(yahooFinanceStockTest);
   });

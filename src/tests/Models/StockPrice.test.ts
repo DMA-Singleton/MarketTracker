@@ -18,6 +18,8 @@ test("basicOperations", async () => {
     close: 26,
     volume: 25,
   });
+  stockPriceTest.open = 26;
+  await stockPriceModel.persist(stockPriceTest);
   return stockPriceModel.findById(1).then((stockPrice) => {
     expect(stockPrice).toStrictEqual(stockPriceTest);
   });
@@ -57,16 +59,16 @@ test("persist with identity fail", async () => {
     close: 25,
     volume: 25,
   });
-  const stockPriceTest2 = await stockPriceModel.persist({
-    stockId: stockTest.id,
-    date: new Date(2020, 1, 1),
-    open: 25,
-    close: 25,
-    volume: 25,
-  });
-  return stockPriceModel.findAllByStockId(stockTest.id).then((stockPrices) => {
-    expect(stockPrices).toMatchObject([stockPriceTest]);
-  });
+  const t = async () => {
+    const stockPriceTest2 = await stockPriceModel.persist({
+      stockId: stockTest.id,
+      date: new Date(2020, 1, 1),
+      open: 25,
+      close: 25,
+      volume: 25,
+    });
+  };
+  return await expect(t).rejects.toThrowError(new Error("model is not creatable"));
 });
 
 test("getLatestPriceOfStockId without prices", async () => {

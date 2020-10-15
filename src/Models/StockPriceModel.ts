@@ -49,7 +49,7 @@ class StockPriceModel extends BaseModel<IStockPrice, StockPriceEntity> implement
     return model;
   }
 
-  protected async checkIdentityConstraints(model: IStockPrice) {
+  protected async isCreatable(model: IStockPrice) {
     const entity = await this.dataAccess.findOne({
       where: { Date: model.date, Stock_ID: model.stockId },
     });
