@@ -31,7 +31,6 @@ abstract class BaseModel<T1 extends IBase, T2 extends BaseEntity> {
 
   async exist(model: T1) {
     if ((await this.checkIdentityConstraints(model)) === false) return true;
-    if (model.id === undefined) return false;
     if ((await this.checkUniqueId(model)) === false) return true;
     return false;
   }
